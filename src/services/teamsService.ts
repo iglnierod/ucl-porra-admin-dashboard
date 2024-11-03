@@ -9,7 +9,7 @@ export const getTeams = async (): Promise<Team[]> => {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const teams: Team[] = await response.json();
-    return teams;
+    return teams.sort((a, b) => a.name.localeCompare(b.name));
   } catch (err) {
     console.error("Error fetching teams");
     throw err;

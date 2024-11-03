@@ -4,15 +4,18 @@ import { getTeams } from "../../services/teamsService";
 import { Select } from "../utils/Select";
 import { Button } from "../utils/Button";
 import { saveMatch } from "../../services/matchesService";
+import { Match } from "../../models/matches";
 
 interface CreateMatchModalProps {
   onClose: () => void;
   selectedMatchday: number | null;
+  onMatchCreated: (newMatch: Match) => void;
 }
 
 export const CreateMatchModal = ({
   onClose,
   selectedMatchday,
+  onMatchCreated,
 }: CreateMatchModalProps) => {
   const [teams, setTeams] = useState<Team[]>([]);
   const [localTeam, setLocalTeam] = useState<Team | null>(null);
@@ -32,7 +35,7 @@ export const CreateMatchModal = ({
     fetchTeams();
   }, []);
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     if (localTeam === null || awayTeam === null) {
       setError("Please select both teams");
@@ -44,11 +47,13 @@ export const CreateMatchModal = ({
       return;
     }
 
-    saveMatch({
+    const newMatch = await saveMatch({
       localTeamId: localTeam.id,
       awayTeamId: awayTeam.id,
       matchdayId: selectedMatchday,
     });
+
+    onMatchCreated(newMatch);
 
     onClose();
     setError(null);

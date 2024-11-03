@@ -27,7 +27,7 @@ interface saveMatchProps {
   matchdayId: number;
 }
 
-export const saveMatch = async (newMatch: saveMatchProps) => {
+export const saveMatch = async (newMatch: saveMatchProps): Promise<Match> => {
   newMatch.localGoals = 0;
   newMatch.awayGoals = 0;
   const response = await fetch(API_URL, {

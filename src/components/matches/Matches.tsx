@@ -50,6 +50,11 @@ export function Matches() {
     fetchMatches();
   }, [selectedMatchday]);
 
+  const onMatchCreated = (newMatch: Match) => {
+    const newMatches = [...matches, newMatch];
+    setMatches(newMatches);
+  };
+
   return (
     <section className="flex flex-col items-center gap-8">
       <section>
@@ -84,6 +89,7 @@ export function Matches() {
         <CreateMatchModal
           selectedMatchday={selectedMatchday}
           onClose={() => setShowModal(false)}
+          onMatchCreated={onMatchCreated}
         />
       )}
 
